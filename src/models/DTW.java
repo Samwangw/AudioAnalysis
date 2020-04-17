@@ -1,45 +1,48 @@
 package models;
 
 import accessing.ReadAudioFile;
-import processing.frame.Frame;
-import processing.frame.Volume;
-import processing.frame.ZCR;
+import processing.frame.*;
 import util.WavHeader;
 
+/**
+ * Dynamic time wrapping
+ * 
+ * @author Wei Wang
+ *
+ */
 public class DTW {
 	public static void dtw() {
 		try {
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private static double[][] getFrameVectors2(String filename) {
 		final int WINDOWSIZE = 512;
-		final int OVERLAP = 100;
+		final int OVERLAP = 256;
 		try {
-			byte[] audioBytes = ReadAudioFile.getBytes(filename);
-			int len = audioBytes.length;
-			int num_window = len / (WINDOWSIZE - OVERLAP) - 1;
-			double[][] vecs = new double[num_window][];
-			for (int i = 0; i < num_window; i++) {
+			System.out.println("Getting frame vectors from " + filename);
+			WavHeader header = WavHeader.getWavHeader(filename);
+			int[] audioBytes = ReadAudioFile.getSignal(filename, header.get_fmt().getBitsPerSample());
+			double[][] frames = Frame.getFrames(audioBytes, WINDOWSIZE, OVERLAP);
+			double[][] vecs = new double[frames.length][];
+			for (int i = 0; i < frames.length; i++) {
 				Complex[] x = new Complex[WINDOWSIZE];
 				for (int j = 0; j < WINDOWSIZE; j++) {
-					x[j] = new Complex(audioBytes[i * (WINDOWSIZE - OVERLAP) + j], 0);
+					x[j] = new Complex(frames[i][j], 0);
 
 				}
 				Complex[] resutls = FFT.fft(x);
 
-				// set vector for current window
+				// get vector for current frame
 				vecs[i] = getFrameVector(resutls);
 
 			}
 			return vecs;
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -62,13 +65,12 @@ public class DTW {
 			double[][] frames = Frame.getFrames(audioBytes, WINDOWSIZE, OVERLAP);
 			double[][] vecs = new double[frames.length][];
 			for (int i = 0; i < frames.length; i++) {
-				// set vector for current window
+				// get vector for current frame
 				vecs[i] = getFrameVector(frames[i]);
 			}
 			return vecs;
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

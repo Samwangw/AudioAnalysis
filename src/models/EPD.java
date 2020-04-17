@@ -3,13 +3,17 @@ package models;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.event.ListSelectionEvent;
-
 import accessing.ReadAudioFile;
 import processing.frame.Frame;
 import processing.frame.Justification;
 import processing.frame.Volume;
 
+/**
+ * End point detection
+ * 
+ * @author Wei Wang
+ *
+ */
 public class EPD {
 
 	public static int[] getEPbyVolume(double[] sigs) {
