@@ -35,6 +35,7 @@ public class Frame {
 
 	public double[] downSample(int step) {
 		int len = this.samples.length;
+		step++;
 		double[] result = new double[len];
 		for (int i = 0; i < len; i++)
 			result[i] = 0;

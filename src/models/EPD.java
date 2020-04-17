@@ -60,7 +60,6 @@ public class EPD {
 			return endpoints;
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -100,7 +99,6 @@ public class EPD {
 			return endpoints;
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -134,7 +132,6 @@ public class EPD {
 				re[i] = endpoints.get(i);
 			return re;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
