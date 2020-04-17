@@ -16,4 +16,9 @@ public class ConverterUtil {
 		new Converter().convert(MP3File, WavFile);
 
 	}
+	
+	public static void main(String[] args) {
+		// ConverterUtil.convertMP32MAV("dataset\\sample\\4.wma",
+		// "dataset\\sample\\4.wav");
+	}
 }

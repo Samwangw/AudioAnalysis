@@ -4,6 +4,7 @@ import com.musicg.fingerprint.FingerprintSimilarityComputer;
 import com.musicg.wave.Wave;
 
 import core.Core;
+import util.AudioUtil;
 
 public class Similarity {
 	/**
@@ -53,5 +54,33 @@ public class Similarity {
 			e.printStackTrace();
 			return -1;
 		}
+	}
+
+	public static void main(String[] args) {
+		// case 1
+		Similarity.getMusicgFingSim("dataset\\standard\\1.wav", "dataset\\standard\\1.wav");
+		// case 2
+		Similarity.getMusicgFingSim("dataset\\standard\\1.wav", "dataset\\sample\\2.wav");
+		// case 3
+		Similarity.getMusicgFingSim("dataset\\standard\\1.wav", "dataset\\sample\\3.wav");
+		// case 4
+		Similarity.getMusicgFingSim("dataset\\standard\\1.wav", "dataset\\sample\\4.wav");
+		Similarity.getMusicgFingSim("dataset\\standard\\1.wav", "dataset\\sample\\5.wav");
+		// case 5
+		Similarity.getMusicgFingSim("dataset\\sample\\2.wav", "dataset\\sample\\4.wav");
+		Similarity.getMusicgFingSim("dataset\\sample\\3.wav", "dataset\\sample\\4.wav");
+		Similarity.getMusicgFingSim("dataset\\sample\\2.wav", "dataset\\sample\\5.wav");
+		Similarity.getMusicgFingSim("dataset\\sample\\3.wav", "dataset\\sample\\5.wav");
+		Similarity.getMusicgFingSim("dataset\\sample\\4.wav", "dataset\\sample\\5.wav");
+		// Similarity.getFingSim_Musicg("dataset\\standard\\1.wav",
+		// "dataset\\sample\\012.wav");
+		// Similarity.getFingSim_Musicg("dataset\\sample\\2.wav",
+		// "dataset\\sample\\012.wav");
+		// Similarity.getFingSim_Musicg("dataset\\sample\\3.wav",
+		// "dataset\\sample\\012.wav");
+		// Similarity.getFingSim_Musicg("dataset\\sample\\4.wav",
+		// "dataset\\sample\\012.wav");
+		// Similarity.getFingSim_Musicg("dataset\\sample\\5.wav",
+		// "dataset\\sample\\012.wav");
 	}
 }

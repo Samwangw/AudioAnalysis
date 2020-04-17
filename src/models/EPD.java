@@ -8,6 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import accessing.ReadAudioFile;
 import processing.frame.Frame;
 import processing.frame.Justification;
+import processing.frame.Volume;
 
 public class EPD {
 
@@ -28,7 +29,7 @@ public class EPD {
 					x[j] = sigs[i * (WINDOWSIZE - OVERLAP) + j];
 
 				}
-				vols[i] = Feature.getVolumn1(x);
+				vols[i] = Volume.volume1(x);
 			}
 			for (int i = 0; i < vols.length; i++) {
 				if (vols[i] > max)
@@ -68,7 +69,7 @@ public class EPD {
 		try {
 			double[] vols = new double[sig.length];
 			for (int i = 0; i < sig.length; i++) {
-				vols[i] = Feature.getVolumn1(sig[i]);
+				vols[i] = Volume.volume1(sig[i]);
 			}
 			for (int i = 0; i < vols.length; i++) {
 				if (vols[i] > max)
@@ -108,7 +109,7 @@ public class EPD {
 		try {
 			double[] vols = new double[sig.length];
 			for (int i = 0; i < sig.length; i++) {
-				vols[i] = Feature.getVolumn1(sig[i]);
+				vols[i] = Volume.volume1(sig[i]);
 			}
 			for (int i = 0; i < vols.length; i++) {
 				if (vols[i] > max)
@@ -120,8 +121,7 @@ public class EPD {
 				if (vols[i] < ((max - min) * 0.1 + min)) {
 					endpoints.add(i);
 					System.out.println(max + "    " + vols[i]);
-				}
-				else{
+				} else {
 					System.out.println(0 + "    " + vols[i]);
 				}
 

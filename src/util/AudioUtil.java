@@ -133,4 +133,7 @@ public class AudioUtil {
 		line.write(samples, 0, samples.length);
 	}
 
+	public static void main(String[] args) {
+		AudioUtil.play("dataset\\sample\\soo.wav");
+	}
 }
