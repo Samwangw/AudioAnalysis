@@ -1,11 +1,12 @@
 package processing.frame;
 
 import accessing.ReadAudioFile;
+import util.WavHeader;
 
 /**
- * AMDF (average magnitude difference function) is very close to ACF except that
- * it estimates the distance instead of similarity between a frame s(i), i = 0 ~
- * n-1, and its delayed version
+ * 短 时平 均 幅度 差 AMDF (average magnitude difference function) is very close to ACF
+ * except that it estimates the distance instead of similarity between a frame
+ * s(i), i = 0 ~ n-1, and its delayed version
  * 
  * @author Wei Wang
  *
@@ -81,7 +82,12 @@ public class AMDF {
 
 	public static void main(String args[]) {
 		System.out.println("test average magnitude difference function (AMDF)");
-		int[] audios = ReadAudioFile.getSignal("dataset\\sample\\sunday.wav", 16);
+
+		String filename = "dataset\\sample\\sunday.wav";
+		WavHeader hearder = WavHeader.getWavHeader(filename);
+		int bps = hearder.get_fmt().getBitsPerSample();
+		int[] audios = ReadAudioFile.getSignal(filename, bps);
+
 		int index1 = 9000;
 		int framesize = 512;
 		double[] sig = new double[framesize];

@@ -1,5 +1,8 @@
 package processing.frame;
 
+import accessing.ReadAudioFile;
+import util.WavHeader;
+
 public class Frame {
 	public double[] samples;
 
@@ -69,5 +72,25 @@ public class Frame {
 			frames[i] = frame;
 		}
 		return frames;
+	}
+
+	public static void main(String args[]) {
+		System.out.println("test average magnitude difference function (AMDF)");
+
+		String filename = "dataset\\sample\\sunday.wav";
+		WavHeader hearder = WavHeader.getWavHeader(filename);
+		int bps = hearder.get_fmt().getBitsPerSample();
+		int[] audios = ReadAudioFile.getSignal(filename, bps);
+
+		int index1 = 9000;
+		int framesize = 16;
+		double[] sig = new double[framesize];
+		for (int i = 0; i < framesize; i++)
+			sig[i] = audios[index1 + i];
+		Frame f = new Frame(sig);
+		f.show();
+		f.norm();
+		System.out.println();
+		f.show();
 	}
 }

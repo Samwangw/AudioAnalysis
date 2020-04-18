@@ -3,6 +3,7 @@ package processing.frame;
 import java.util.Arrays;
 
 import accessing.ReadAudioFile;
+import util.WavHeader;
 
 /**
  * auto-correlation function (ACF) for pitch tracking. This is a time-domain
@@ -73,7 +74,12 @@ public class ACF {
 
 	public static void main(String args[]) {
 		System.out.println("test auto-correlation function (ACF)");
-		int[] audios = ReadAudioFile.getSignal("dataset\\sample\\sunday.wav", 16);
+
+		String filename = "dataset\\sample\\sunday.wav";
+		WavHeader hearder = WavHeader.getWavHeader(filename);
+		int bps = hearder.get_fmt().getBitsPerSample();
+		int[] audios = ReadAudioFile.getSignal(filename, bps);
+
 		int index1 = 9000;
 		int framesize = 512;
 		double[] sig = new double[framesize];
