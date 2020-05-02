@@ -2,6 +2,7 @@ package models;
 
 import accessing.ReadAudioFile;
 import processing.frame.*;
+import util.JFreeChartUtil;
 import util.WavHeader;
 
 /**
@@ -107,13 +108,14 @@ public class DTW {
 	public static void main(String[] args) {
 		double[][] vec1 = getFrameVectors("dataset\\standard\\1.wav");
 		double[][] vec2 = getFrameVectors("dataset\\sample\\2.wav");
-		double[][] vec3 = getFrameVectors("dataset\\sample\\3.wav");
-		double[][] vec4 = getFrameVectors("dataset\\sample\\4.wav");
-		double[][] vec5 = getFrameVectors("dataset\\sample\\5.wav");
 		System.out.println(Distance.getDTWDistance(vec1, vec2));
-		System.out.println(Distance.getDTWDistance(vec1, vec3));
-		System.out.println(Distance.getDTWDistance(vec1, vec4));
-		System.out.println(Distance.getDTWDistance(vec1, vec5));
+//		double[][] vec3 = getFrameVectors("dataset\\sample\\3.wav");
+//		double[][] vec4 = getFrameVectors("dataset\\sample\\4.wav");
+//		double[][] vec5 = getFrameVectors("dataset\\sample\\5.wav");
+//		System.out.println(Distance.getDTWDistance(vec1, vec2));
+//		System.out.println(Distance.getDTWDistance(vec1, vec3));
+//		System.out.println(Distance.getDTWDistance(vec1, vec4));
+//		System.out.println(Distance.getDTWDistance(vec1, vec5));
 
 		// double[][] vec6 = getFrameVectors("dataset\\sample\\water1.wav");
 		// double[][] vec7 = getFrameVectors("dataset\\sample\\water2.wav");
