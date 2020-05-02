@@ -133,7 +133,7 @@ public class ACF {
 		double[] sig = new double[framesize];
 		for (int i = 0; i < framesize; i++)
 			sig[i] = audios[index1 + i];
-		JFreeChartUtil.createLineChart(sig, "output/acf.jpg");
+		JFreeChartUtil.createLineChart("output/acf.jpg", new String[] { "discrete-time signal" }, sig);
 		int acf = acf(sig);
 		System.out.println(acf);
 	}

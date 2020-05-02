@@ -47,11 +47,13 @@ public class Volume {
 
 	public static void main(String args[]) {
 		System.out.println("test volume");
-		String filename = "dataset\\sample\\2.wav";
+		String filename = "dataset\\standard\\1.wav";
 		final int WINDOWSIZE = 256;
 		final int OVERLAP = 128;
 		try {
+			String[] files = new String[3];
 			System.out.println("Getting frame vectors from " + filename);
+			files[0] = filename;
 			WavHeader header = WavHeader.getWavHeader(filename);
 			int[] audioBytes = ReadAudioFile.getSignal(filename, header.get_fmt().getBitsPerSample());
 			double[][] frames = Frame.getFrames(audioBytes, WINDOWSIZE, OVERLAP);
@@ -60,7 +62,10 @@ public class Volume {
 				// get vector for current frame
 				volume1[i] = volume2(frames[i]);
 			}
-			filename = "dataset\\sample\\3.wav";
+
+			filename = "dataset\\sample\\2.wav";
+			System.out.println("Getting frame vectors from " + filename);
+			files[1] = filename;
 			header = WavHeader.getWavHeader(filename);
 			audioBytes = ReadAudioFile.getSignal(filename, header.get_fmt().getBitsPerSample());
 			frames = Frame.getFrames(audioBytes, WINDOWSIZE, OVERLAP);
@@ -69,7 +74,20 @@ public class Volume {
 				// get vector for current frame
 				volume2[i] = volume2(frames[i]);
 			}
-			JFreeChartUtil.createLineChart(volume1, volume2, "output/volume test.jpg");
+
+			filename = "dataset\\sample\\3.wav";
+			System.out.println("Getting frame vectors from " + filename);
+			files[2] = filename;
+			header = WavHeader.getWavHeader(filename);
+			audioBytes = ReadAudioFile.getSignal(filename, header.get_fmt().getBitsPerSample());
+			frames = Frame.getFrames(audioBytes, WINDOWSIZE, OVERLAP);
+			double[] volume3 = new double[frames.length];
+			for (int i = 0; i < frames.length; i++) {
+				// get vector for current frame
+				volume3[i] = volume2(frames[i]);
+			}
+
+			JFreeChartUtil.createLineChart("output/volume test.jpg", files, volume1, volume2, volume3);
 
 		} catch (Exception e) {
 			e.printStackTrace();
