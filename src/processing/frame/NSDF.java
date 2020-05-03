@@ -1,6 +1,7 @@
 package processing.frame;
 
 import accessing.ReadAudioFile;
+import util.WavHeader;
 
 /**
  * normalized squared difference function(NSDF)
@@ -68,9 +69,15 @@ public class NSDF {
 
 	public static void main(String args[]) {
 		System.out.println("test normalized squared difference function (NSDF)");
-		int[] audios = ReadAudioFile.getSignal("dataset\\sample\\soo.wav", 8);
+		
+		String filename = "dataset\\sample\\soo.wav";
+		WavHeader hearder = WavHeader.getWavHeader(filename);
+		int bps = hearder.get_fmt().getBitsPerSample();
+		int[] audios = ReadAudioFile.getSignal(filename, bps);
+		
 		double[] sig = Justification.zero(audios);
-		double[][] frames = Frame.getFrames(sig, 350, 175);
+		
+		double[][] frames = Frame.getFrames(sig, 256, 128);
 		for (int i = 0; i < frames.length; i++) {
 			int nsdf = nsdf(frames[i]);
 			System.out.println(nsdf);
