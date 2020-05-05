@@ -27,6 +27,14 @@ public class MFCC {
 		}
 	}
 
+	/***
+	 * 求filterbanks下的能量log
+	 * 
+	 * @param frame
+	 * @param num_filters
+	 * @param samplerate
+	 * @return
+	 */
 	public static double[] mfcc(double[] frame, int num_filters, double samplerate) {
 		double[] mfcc = new double[num_filters];
 		// transform frame raw data array into complex array
@@ -48,6 +56,24 @@ public class MFCC {
 		}
 
 		return mfcc;
+	}
+
+	/***
+	 * 求倒谱系数
+	 * 
+	 * @param mfcc
+	 * @param numcep
+	 * @return
+	 */
+	public static double[] dct(double[] mfcc, int numcep) {
+		double[] re = new double[numcep];
+		for (int i = 0; i < numcep; i++) {
+			re[i] = 0;
+			for (int j = 0; j < mfcc.length; j++) {
+				re[i] += Math.cos(2 * Math.PI / mfcc.length * (j + 0.5) * i) * mfcc[j];
+			}
+		}
+		return re;
 	}
 
 	/***
@@ -102,9 +128,10 @@ public class MFCC {
 			}
 			fb[i] = filter;
 		}
-//		JFreeChartUtil.createLineChart("output/MFCC.jpg",
-//				new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, fb[0], fb[1], fb[2], fb[3], fb[4],
-//				fb[5], fb[6], fb[7], fb[8], fb[9]);
+		// JFreeChartUtil.createLineChart("output/MFCC.jpg",
+		// new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" },
+		// fb[0], fb[1], fb[2], fb[3], fb[4],
+		// fb[5], fb[6], fb[7], fb[8], fb[9]);
 		return fb;
 	}
 
