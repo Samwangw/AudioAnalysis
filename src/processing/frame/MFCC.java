@@ -5,6 +5,7 @@ import java.util.Arrays;
 import accessing.ReadAudioFile;
 import models.Complex;
 import models.FFT;
+import util.JFreeChartUtil;
 import util.WavHeader;
 
 public class MFCC {
@@ -12,23 +13,22 @@ public class MFCC {
 	public static void main(String[] args) {
 		System.out.println("test MFCC");
 		String filename = "dataset\\sample\\soo.wav";
-		WavHeader hearder = WavHeader.getWavHeader(filename);
-		int bps = hearder.get_fmt().getBitsPerSample();
+		WavHeader header = WavHeader.getWavHeader(filename);
+		int bps = header.get_fmt().getBitsPerSample();
 		int[] audios = ReadAudioFile.getSignal(filename, bps);
 
 		double[] sig = Justification.zero(audios);
 		sig = preemphasis(sig);
 
 		double[][] frames = Frame.getFrames(sig, 512, 256);
-		for (int i = 0; i < frames.length; i++) {
-			double mfcc = mfcc(frames[i], 16000);
+		for (int i = 0; i < 1; i++) {
+			double[] mfcc = mfcc(frames[i], 10, header.get_fmt().getSampleRate());
 			// System.out.println(mfcc);
 		}
-		getFilterbanks(10, frames[0].length, 16000);
 	}
 
-	public static double mfcc(double[] frame, double samplerate) {
-		double mfcc = 0;
+	public static double[] mfcc(double[] frame, int num_filters, double samplerate) {
+		double[] mfcc = new double[num_filters];
 		// transform frame raw data array into complex array
 		int len = frame.length;
 		Complex[] cFrame = new Complex[len];
@@ -37,8 +37,15 @@ public class MFCC {
 		}
 		Complex[] fredomain = FFT.fft(cFrame);
 		double[] powers = getPowspec(fredomain);
-		double[][] fbanks = getFilterbanks(26, powers.length, samplerate);
-		// TODO
+		double[][] fbanks = getFilterbanks(num_filters, powers.length, samplerate);
+		for (int i = 0; i < fbanks.length; i++) {
+			mfcc[i] = 0;
+			for (int j = 0; j < fbanks[i].length; j++) {
+				mfcc[i] += powers[j] * fbanks[i][j];
+			}
+			mfcc[i] = Math.log(mfcc[i]);
+			System.out.println(mfcc[i]);
+		}
 
 		return mfcc;
 	}
@@ -78,23 +85,26 @@ public class MFCC {
 	}
 
 	public static double[][] getFilterbanks(int num_filters, int sigLength, double samplerate) {
-		int[] centers = getFilterCenters(sigLength, num_filters, samplerate, 300, 8000);
+		int[] centers = getFilterCenters(sigLength, num_filters, samplerate, 300, samplerate / 2);
 		double[][] fb = new double[num_filters][];
 		for (int i = 0; i < num_filters; i++) {
-			double[] filter = new double[sigLength];
+			double[] filter = new double[sigLength / 2 + 1];
 			// init filter
-			for (int j = 0; j < sigLength; j++)
+			for (int j = 0; j < filter.length; j++)
 				filter[j] = 0;
 			// build left edge
 			for (int j = centers[i]; j <= centers[i + 1]; j++) {
-				filter[j] = (j - centers[i]) / (centers[i + 1] - centers[i]);
+				filter[j] = (j - centers[i]) / (double) (centers[i + 1] - centers[i]);
 			}
 			// buid right edge
 			for (int j = centers[i + 1]; j <= centers[i + 2]; j++) {
-				filter[j] = (centers[i + 2] - j) / (centers[i + 2] - centers[i + 1]);
+				filter[j] = (centers[i + 2] - j) / (double) (centers[i + 2] - centers[i + 1]);
 			}
 			fb[i] = filter;
 		}
+//		JFreeChartUtil.createLineChart("output/MFCC.jpg",
+//				new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, fb[0], fb[1], fb[2], fb[3], fb[4],
+//				fb[5], fb[6], fb[7], fb[8], fb[9]);
 		return fb;
 	}
 
@@ -134,7 +144,6 @@ public class MFCC {
 		for (int i = 0; i < cs.length; i++) {
 			centers[i] = (int) cs[i];
 		}
-		System.out.println(Arrays.toString(centers));
 		return centers;
 	}
 }
